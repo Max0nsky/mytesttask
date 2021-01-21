@@ -21,6 +21,191 @@ Documentation is at [docs/guide/README.md](docs/guide/README.md).
 [![Total Downloads](https://img.shields.io/packagist/dt/yiisoft/yii2-app-advanced.svg)](https://packagist.org/packages/yiisoft/yii2-app-advanced)
 [![build](https://github.com/yiisoft/yii2-app-advanced/workflows/build/badge.svg)](https://github.com/yiisoft/yii2-app-advanced/actions?query=workflow%3Abuild)
 
+ЭКСПОРТ БАЗЫ ДАННЫХ
+-------------------
+
+-- Хост: localhost
+-- Время создания: Янв 21 2021 г., 18:08
+-- Версия сервера: 8.0.22-0ubuntu0.20.04.3
+-- Версия PHP: 7.4.14
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- База данных: `MyDataBase`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `Group`
+--
+
+CREATE TABLE `Group` (
+  `id` int NOT NULL,
+  `name` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Дамп данных таблицы `Group`
+--
+
+INSERT INTO `Group` (`id`, `name`) VALUES
+(1, 'A'),
+(2, 'B'),
+(3, 'C'),
+(4, 'D'),
+(5, 'E');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `migration`
+--
+
+CREATE TABLE `migration` (
+  `version` varchar(180) NOT NULL,
+  `apply_time` int DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Дамп данных таблицы `migration`
+--
+
+INSERT INTO `migration` (`version`, `apply_time`) VALUES
+('m000000_000000_base', 1611217038),
+('m130524_201442_init', 1611217080),
+('m190124_110200_add_verification_token_column_to_user_table', 1611217080);
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `Product`
+--
+
+CREATE TABLE `Product` (
+  `id` int NOT NULL,
+  `id_group` int NOT NULL,
+  `Widht` int NOT NULL,
+  `Height` int NOT NULL,
+  `Length` int NOT NULL,
+  `Quantity` int NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Дамп данных таблицы `Product`
+--
+
+INSERT INTO `Product` (`id`, `id_group`, `Widht`, `Height`, `Length`, `Quantity`) VALUES
+(2, 1, 1, 1, 1, 5),
+(3, 1, 2, 2, 2, 5),
+(4, 2, 3, 1, 2, 5),
+(5, 3, 5, 1, 4, 5),
+(6, 4, 4, 3, 1, 5),
+(7, 5, 5, 4, 5, 5),
+(8, 5, 5, 5, 5, 5),
+(9, 5, 4, 2, 5, 5),
+(10, 2, 3, 3, 3, 5),
+(11, 3, 2, 1, 2, 5),
+(12, 4, 4, 4, 4, 5);
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `user`
+--
+
+CREATE TABLE `user` (
+  `id` int NOT NULL,
+  `username` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `auth_key` varchar(32) COLLATE utf8_unicode_ci NOT NULL,
+  `password_hash` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `password_reset_token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `status` smallint NOT NULL DEFAULT '10',
+  `created_at` int NOT NULL,
+  `updated_at` int NOT NULL,
+  `verification_token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Индексы сохранённых таблиц
+--
+
+--
+-- Индексы таблицы `Group`
+--
+ALTER TABLE `Group`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `migration`
+--
+ALTER TABLE `migration`
+  ADD PRIMARY KEY (`version`);
+
+--
+-- Индексы таблицы `Product`
+--
+ALTER TABLE `Product`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `Product_FK` (`id_group`);
+
+--
+-- Индексы таблицы `user`
+--
+ALTER TABLE `user`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `username` (`username`),
+  ADD UNIQUE KEY `email` (`email`),
+  ADD UNIQUE KEY `password_reset_token` (`password_reset_token`);
+
+--
+-- AUTO_INCREMENT для сохранённых таблиц
+--
+
+--
+-- AUTO_INCREMENT для таблицы `Group`
+--
+ALTER TABLE `Group`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- AUTO_INCREMENT для таблицы `Product`
+--
+ALTER TABLE `Product`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT для таблицы `user`
+--
+ALTER TABLE `user`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+
+--
+-- Ограничения внешнего ключа сохраненных таблиц
+--
+
+--
+-- Ограничения внешнего ключа таблицы `Product`
+--
+ALTER TABLE `Product`
+  ADD CONSTRAINT `Product_FK` FOREIGN KEY (`id_group`) REFERENCES `Group` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
 DIRECTORY STRUCTURE
 -------------------
 
