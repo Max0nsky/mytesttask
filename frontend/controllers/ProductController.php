@@ -2,8 +2,8 @@
 
 namespace frontend\controllers;
 
-use frontend\models\Product;
-use frontend\models\Group;
+use common\models\Product;
+use common\models\Group;
 use yii\web\HttpException;
 use yii\web\Controller;
 use Yii;

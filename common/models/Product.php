@@ -1,6 +1,6 @@
 <?php
 
-namespace frontend\models;
+namespace common\models;
 
 use yii\db\ActiveRecord;
 use Yii;
@@ -12,7 +12,7 @@ use Yii;
  * @property int $id_group
  * @property int $Widht
  * @property int $Height
- * @property int $Lenght
+ * @property int $Length
  * @property int $Quantity
  *
  * @property Group $group
@@ -33,8 +33,10 @@ class Product extends ActiveRecord
     public function rules()
     {
         return [
-            [['id_group', 'Widht', 'Height', 'Lenght', 'Quantity'], 'required'],
-            [['id_group', 'Widht', 'Height', 'Lenght', 'Quantity'], 'integer'],
+            [['id_group', 'Widht', 'Height', 'Length', 'Quantity'], 'required'],
+            [['id_group', 'Widht', 'Height', 'Length', 'Quantity'], 'integer'],
+            [['Widht', 'Height', 'Length'], 'integer', 'min' => 1, 'max' => 5],
+            [['Quantity'], 'integer', 'min' => 1, 'max' => 999],
             [['id_group'], 'exist', 'skipOnError' => true, 'targetClass' => Group::className(), 'targetAttribute' => ['id_group' => 'id']],
         ];
     }
@@ -46,11 +48,11 @@ class Product extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'id_group' => 'Id Group',
-            'Widht' => 'Widht',
-            'Height' => 'Height',
-            'Length' => 'Lenght',
-            'Quantity' => 'Quantity',
+            'id_group' => 'Id группы',
+            'Widht' => 'Ширина',
+            'Height' => 'Высота',
+            'Length' => 'Длина',
+            'Quantity' => 'Количество',
         ];
     }
 

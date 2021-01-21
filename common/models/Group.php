@@ -1,6 +1,6 @@
 <?php
 
-namespace frontend\models;
+namespace common\models;
 
 use yii\db\ActiveRecord;
 use Yii;
@@ -41,7 +41,7 @@ class Group extends ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
+            'name' => 'Название',
         ];
     }
 

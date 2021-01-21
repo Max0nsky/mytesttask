@@ -25,7 +25,7 @@ Documentation is at [docs/guide/README.md](docs/guide/README.md).
 -------------------
 
 -- Хост: localhost
--- Время создания: Янв 21 2021 г., 18:08
+-- Время создания: Янв 21 2021 г., 23:22
 -- Версия сервера: 8.0.22-0ubuntu0.20.04.3
 -- Версия PHP: 7.4.14
 
@@ -138,6 +138,13 @@ CREATE TABLE `user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
+-- Дамп данных таблицы `user`
+--
+
+INSERT INTO `user` (`id`, `username`, `auth_key`, `password_hash`, `password_reset_token`, `email`, `status`, `created_at`, `updated_at`, `verification_token`) VALUES
+(2, 'admin', 'adTn7Xb9yDpEXZ1EZRq3wxZ92Jx3ug7K', '$2y$13$Pdba6nLQDj9T7JebzFvCYu6UuEYjVUmvR8.bEpltY9KJEviL5SieW', NULL, 'maksimum.99@mail.ru', 10, 1611253474, 1611253474, 'ogP_czKegHi9vhpzRbaxnRsHAotk15Yh_1611253474');
+
+--
 -- Индексы сохранённых таблиц
 --
 
@@ -183,13 +190,13 @@ ALTER TABLE `Group`
 -- AUTO_INCREMENT для таблицы `Product`
 --
 ALTER TABLE `Product`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT для таблицы `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Ограничения внешнего ключа сохраненных таблиц
