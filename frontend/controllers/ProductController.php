@@ -4,6 +4,7 @@ namespace frontend\controllers;
 
 use common\models\Product;
 use common\models\Group;
+use frontend\models\FilterForm;
 use yii\web\HttpException;
 use yii\web\Controller;
 use Yii;
@@ -15,16 +16,21 @@ use Yii;
 class ProductController extends Controller
 {
     /**
-     * Показ главной страницы
+     * Показ главной страницы c фильтром
      *
      * @return mixed
      */
     public function actionIndex()
     {
-        $products = Product::find()->orderBy('id_group')->indexBy('id')->asArray()->all();
         $groups = Group::find()->indexBy('id')->asArray()->all();
-
-        return $this->render('index', ['products' => $products, 'groups' => $groups]);
+        $filterForm = new FilterForm();
+        $filterForm->setPropertiesByGet();
+        if ($filterForm->validate()) {
+            $products = $filterForm->getResultByFilter();
+        } else {
+            throw new HttpException(404, 'По данному запросу ничего не найдено.');
+        }
+        return $this->render('index', ['products' => $products, 'groups' => $groups, 'filterForm' => $filterForm]);
     }
 
     /**
