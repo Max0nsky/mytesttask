@@ -67,8 +67,8 @@ class Product extends ActiveRecord
     }
 
     /**
-     * Рассчет данных для Ajax ответа на странице details
-     * Возвращает массив с price и quantityOnStore
+     * Вычисление данных для Ajax ответа по принятому POST
+     *  @return array $result
      */
     public static function calculateForAjax($postValues)
     {
