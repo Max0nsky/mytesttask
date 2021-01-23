@@ -38,14 +38,21 @@ class ProductController extends Controller
      *
      * @return mixed
      */
-    public function actionDetails($id_group)
+    public function actionDetails($id_group = 0, $Widht = 0, $Height = 0, $Length = 0)
     {
-        $products = Product::findAll(['id_group' => $id_group]);
-        if (empty($products)) {
+        // Если пришел Post от Ajax, то считаем и возвращаем результат
+        if (Yii::$app->request->isPost && Yii::$app->request->isAjax) {
+            $ajaxAnswer = Product::calculateForAjax(Yii::$app->request->post());
+            return json_encode(['price' => $ajaxAnswer['price'], 'quantityOnStore' => $ajaxAnswer['quantityOnStore']]);
+        }
+        
+        // Получение информации о товарном предложении для рендера страницы
+        $productsById = Product::findAll(['id_group' => $id_group]);
+        $product = Product::findOne(['id_group' => $id_group, 'Widht' => $Widht, 'Height' => $Height, 'Length' => $Length]);
+        if (empty($productsById) || empty($product) ) {
             throw new HttpException(404, 'Такого товара не существует.');
         }
         $group = Group::findOne($id_group);
-
-        return $this->render('details', ['products' => $products, 'group' => $group]);
+        return $this->render('details', ['product' => $product,'productsById' => $productsById, 'group' => $group]);
     }
 }

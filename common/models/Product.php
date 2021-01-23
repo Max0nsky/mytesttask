@@ -66,4 +66,20 @@ class Product extends ActiveRecord
         return $this->hasOne(Group::className(), ['id' => 'id_group']);
     }
 
+    /**
+     * Рассчет данных для Ajax ответа на странице details
+     * Возвращает массив с price и quantityOnStore
+     */
+    public static function calculateForAjax($postValues)
+    {
+        $result['quantityOnStore'] = 0;
+        $result['price'] = 0;
+        $product = Product::findOne(['id_group' => $postValues['valueIdGroup'], 'Widht' => $postValues['valueWidht'], 'Height' => $postValues['valueHeight'], 'Length' => $postValues['valueLength']]);
+        if (!empty($product)) {
+            $postValues['valueQuantity'] =  ($postValues['valueQuantity'] < 0 || $postValues['valueQuantity'] > $product->Quantity) ? 0 : $postValues['valueQuantity'];
+            $result['price'] = $product->Widht * $product->Height * $product->Length * $postValues['valueQuantity'];
+            $result['quantityOnStore'] = $product->Quantity;
+        }
+        return $result;
+    }
 }

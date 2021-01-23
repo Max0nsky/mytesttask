@@ -3,7 +3,6 @@
 /* @var $this yii\web\View */
 
 use yii\helpers\Html;
-use yii\helpers\Url;
 
 $this->title = 'Детали ' . $group->name;
 ?>
@@ -11,74 +10,92 @@ $this->title = 'Детали ' . $group->name;
     <div class="body-content">
 
         <div class="row">
+
             <div class="col-lg-4">
                 <?= Html::img("/images/{$group->name}.jpg", ['class' => 'img-details-products', 'alt' => 'test', 'height' => 350]) ?>
+                <input type="hidden" name="IdGroup" value="<?= $group->id ?>">
             </div>
+
             <div class="col-lg-8">
                 <h3>Товар вида <?= $group->name ?></h3>
-                <p>Ширина:
-                <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                    <label class="btn btn-info active">
-                        <input type="radio" name="options" id="1" autocomplete="off" checked> 1
-                    </label>
-                    <label class="btn btn-info">
-                        <input type="radio" name="options" id="2" autocomplete="off"> 2
-                    </label>
-                    <label class="btn btn-info">
-                        <input type="radio" name="options" id="3" autocomplete="off"> 3
-                    </label>
-                    <label class="btn btn-info">
-                        <input type="radio" name="options" id="4" autocomplete="off"> 4
-                    </label>
-                    <label class="btn btn-info">
-                        <input type="radio" name="options" id="5" autocomplete="off"> 5
-                    </label>
-                </div>
-                </p>
-                <p>Высота:
-                <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                    <label class="btn btn-info">
-                        <input type="radio" name="options" id="1" autocomplete="off"> 1
-                    </label>
-                    <label class="btn btn-info">
-                        <input type="radio" name="options" id="2" autocomplete="off"> 2
-                    </label>
-                    <label class="btn btn-info active">
-                        <input type="radio" name="options" id="3" autocomplete="off" checked> 3
-                    </label>
-                    <label class="btn btn-info">
-                        <input type="radio" name="options" id="4" autocomplete="off"> 4
-                    </label>
-                    <label class="btn btn-info">
-                        <input type="radio" name="options" id="5" autocomplete="off"> 5
-                    </label>
-                </div>
-                </p>
-                <p>Длина:
-                <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                    <label class="btn btn-info">
-                        <input type="radio" name="options" id="1" autocomplete="off"> 1
-                    </label>
-                    <label class="btn btn-info">
-                        <input type="radio" name="options" id="2" autocomplete="off"> 2
-                    </label>
-                    <label class="btn btn-info ">
-                        <input type="radio" name="options" id="3" autocomplete="off"> 3
-                    </label>
-                    <label class="btn btn-info">
-                        <input type="radio" name="options" id="4" autocomplete="off"> 4
-                    </label>
-                    <label class="btn btn-info active">
-                        <input type="radio" name="options" id="5" autocomplete="off" checked> 5
-                    </label>
-                </div>
-                </p>
-                <p>Количество: <input type="number" size="3" name="num" min="1" max="5" value="1">
 
-                </p>
-                <p> <b>На складе: 0</b> </p>
-                <h4>Итоговая стоимость: 0</h4>
+                <!-- Widht-->
+                    <p>Ширина:
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <?php for ($i = 1; $i <= 5; $i++) : ?>
+                            <label class="btn btn-info 
+                                <?php
+                                // Закрыть кнопку Widht если нет на складе
+                                $disabled = "disabled";
+                                foreach ($productsById as $productById) {
+                                    if ($productById->Widht == $i) {
+                                        $disabled = "";
+                                        break;
+                                    }
+                                }
+                                echo $disabled;
+                                // Сделать кнопку Widht нажатой при первом показе
+                                if ($product->Widht == $i) echo " active" ?>">
+                                <input class="calc" type="radio" name="Widht" id="w" value="<?= $i ?>" autocomplete="on" <?php if ($product->Widht == $i) echo "checked" ?>> <?= $i ?>
+                            </label>
+                        <?php endfor; ?>
+                    </div>
+                    </p>
+                <!-- /Widht-->
+
+                <!-- Height-->
+                    <p>Высота:
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <?php for ($i = 1; $i <= 5; $i++) : ?>
+                            <label class="btn btn-info  
+                            <?php
+                            // Закрыть кнопку Height если нет на складе
+                            $disabled = "disabled";
+                            foreach ($productsById as $productById) {
+                                if ($productById->Height == $i) {
+                                    $disabled = "";
+                                    break;
+                                }
+                            }
+                            echo $disabled;
+                            // Сделать кнопку Height нажатой при первом показе
+                            if ($product->Height == $i) echo " active" ?>">
+                                <input class="calc" type="radio" name="Height" id="w" value="<?= $i ?>" autocomplete="on" <?php if ($product->Height == $i) echo "checked" ?>> <?= $i ?>
+                            </label>
+                        <?php endfor; ?>
+                    </div>
+                    </p>
+                <!-- /Height-->
+
+                <!-- Length-->
+                    <p>Длина:
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                        <?php for ($i = 1; $i <= 5; $i++) : ?>
+                            <label class="btn btn-info  
+                            <?php
+                            // Закрыть кнопку Length если нет на складе
+                            $disabled = "disabled";
+                            foreach ($productsById as $productById) {
+                                if ($productById->Length == $i) {
+                                    $disabled = "";
+                                    break;
+                                }
+                            }
+                            echo $disabled;
+                            // Сделать кнопку Length нажатой при первом показе
+                            if ($product->Length == $i) echo " active" ?>">
+                                <input class="calc" type="radio" name="Length" id="w" value="<?= $i ?>" autocomplete="on" <?php if ($product->Length == $i) echo "checked" ?>> <?= $i ?>
+                            </label>
+                     <?php endfor; ?>
+                    </div>
+                    </p>
+                <!-- /Length-->
+
+                <p>Количество: <input class="calc" type="number" name="Quantity" id="q" size="3" min="0" max="<?= $product->Quantity ?>" value="0"> </p>
+                <p> <b>На складе: <span class="quantityOnStore" id="quantityOnStore"><?= $product->Quantity ?></span></b> </p>
+                <h4>Итоговая стоимость: <span class="price" id="price"></span> </h4>
             </div>
+
         </div>
 
     </div>

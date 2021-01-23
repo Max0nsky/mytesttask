@@ -2,11 +2,8 @@
 
 /* @var $this yii\web\View */
 
-use common\models\Group;
-use yii\widgets\ActiveForm;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\widgets\Pjax;
 
 $this->title = 'Главная страница';
 ?>
@@ -14,13 +11,12 @@ $this->title = 'Главная страница';
 
     <div class="jumbotron">
         <h1>Тестовое задание</h1>
-
         <p class="lead">Вы можете выбрать необходимые фильтры для показа товаров или перейти к детальному просмотру.</p>
     </div>
-    <?php Pjax::begin(); ?>
     <div class="body-content">
 
         <div class="row">
+
             <div class="col-lg-3">
                 <form method="GET">
                     <h2>Фильтры</h2>
@@ -56,6 +52,7 @@ $this->title = 'Главная страница';
                     <?= Html::submitButton('Показать', ['class' => 'btn btn-primary']) ?>
                 </form>
             </div>
+
             <div class="col-lg-9">
                 <h2>Товары</h2>
                 <div class="row">
@@ -68,7 +65,7 @@ $this->title = 'Главная страница';
                                     Товар: <?= $groups[$product['id_group']]['name'] ?>
                                 </p>
                                 <p>Ш: <?= $product['Widht'] ?>, В: <?= $product['Height'] ?>, Д: <?= $product['Length'] ?>.</p>
-                                <a href="<?= Url::to(['product/details', 'id_group' => $product['id_group']]) ?>" class="btn btn-primary">Переход на страницу товара</a>
+                                <a href="<?= Url::to(['product/details', 'id_group' => $product['id_group'], 'Widht' => $product['Widht'], 'Height' => $product['Height'], 'Length' => $product['Length']]) ?>" class="btn btn-primary">Переход на страницу товара</a>
                             </div>
                             <br>
                         </div>
@@ -78,7 +75,7 @@ $this->title = 'Главная страница';
                     <?php endif; ?>
                 </div>
             </div>
+
         </div>
     </div>
-    <?php Pjax::end(); ?>
 </div>
