@@ -23,6 +23,7 @@ class ProductController extends Controller
     public function actionIndex()
     {
         $groups = Group::find()->indexBy('id')->asArray()->all();
+        $sortValues = FilterForm::getSortArray();
         $filterForm = new FilterForm();
         $filterForm->setPropertiesByGet();
         if ($filterForm->validate()) {
@@ -30,7 +31,7 @@ class ProductController extends Controller
         } else {
             throw new HttpException(404, 'По данному запросу ничего не найдено.');
         }
-        return $this->render('index', ['products' => $products, 'groups' => $groups, 'filterForm' => $filterForm]);
+        return $this->render('index', ['products' => $products, 'groups' => $groups, 'filterForm' => $filterForm, 'sortValues' => $sortValues]);
     }
 
     /**
@@ -45,14 +46,14 @@ class ProductController extends Controller
             $ajaxAnswer = Product::calculateForAjax(Yii::$app->request->post());
             return json_encode(['price' => $ajaxAnswer['price'], 'quantityOnStore' => $ajaxAnswer['quantityOnStore']]);
         }
-        
+
         // Получение информации о товарном предложении для рендера страницы
         $productsById = Product::findAll(['id_group' => $id_group]);
         $product = Product::findOne(['id_group' => $id_group, 'Widht' => $Widht, 'Height' => $Height, 'Length' => $Length]);
-        if (empty($productsById) || empty($product) ) {
+        if (empty($productsById) || empty($product)) {
             throw new HttpException(404, 'Такого товара не существует.');
         }
         $group = Group::findOne($id_group);
-        return $this->render('details', ['product' => $product,'productsById' => $productsById, 'group' => $group]);
+        return $this->render('details', ['product' => $product, 'productsById' => $productsById, 'group' => $group]);
     }
 }

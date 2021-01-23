@@ -20,6 +20,13 @@ $this->title = 'Главная страница';
             <div class="col-lg-3">
                 <form method="GET">
                     <h2>Фильтры</h2>
+                    <p>Сортировка результата: <br>
+                        <select name="sort" id="selectSort">
+                            <?php foreach ($sortValues as $sortValue => $sortName) : ?>
+                                <option value="<?= $sortValue ?>" <?php if($sortValue == $filterForm->sort) echo "selected"?>> <?= $sortName ?> </option>
+                            <?php endforeach; ?>
+                        </select>
+                    </p>
                     <p>Цена: <br>
                         от <input type="number" size="3" name="startPrice" min="1" max="125" value="<?= $filterForm->startPrice ?>">
                         до <input type="number" size="3" name="finishPrise" min="1" max="125" value="<?= $filterForm->finishPrise ?>">
@@ -48,7 +55,6 @@ $this->title = 'Главная страница';
                         от <input type="number" size="3" name="startLength" min="1" max="5" value="<?= $filterForm->startLength ?>">
                         до <input type="number" size="3" name="finishLength" min="1" max="5" value="<?= $filterForm->finishLength ?>">
                     </p>
-
                     <?= Html::submitButton('Показать', ['class' => 'btn btn-primary']) ?>
                 </form>
             </div>

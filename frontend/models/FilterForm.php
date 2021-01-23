@@ -4,6 +4,7 @@ namespace frontend\models;
 
 use Yii;
 use yii\base\Model;
+use yii\db\Query;
 
 class FilterForm extends Model
 {
@@ -16,14 +17,16 @@ class FilterForm extends Model
     public $finishHeight;
     public $startLength;
     public $finishLength;
+    public $sort;
 
     public function rules()
     {
         return [
-            [['startPrice', 'finishPrise', 'group', 'startWidht', 'finishWidht', 'startHeight', 'finishHeight', 'startLength', 'finishLength'], 'required'],
+            [['startPrice', 'finishPrise', 'group', 'startWidht', 'finishWidht', 'startHeight', 'finishHeight', 'startLength', 'finishLength', 'sort'], 'required'],
             [['startWidht', 'finishWidht', 'startHeight', 'finishHeight', 'startLength', 'finishLength'], 'integer', 'min' => 1, 'max' => 5],
             [['startPrice', 'finishPrise'], 'integer', 'min' => 1, 'max' => 125],
-            [['group'], 'integer'],
+            [['group'], 'integer',  'min' => -1, 'max' => 5],
+            [['sort'], 'string', 'max' => 30],
         ];
     }
     public function attributeLabels()
@@ -38,11 +41,12 @@ class FilterForm extends Model
             'finishHeight' => 'Высота до',
             'startLength' => 'Длина от',
             'finishLength' => 'Длина до',
+            'sort' => 'Сортировка',
         ];
     }
 
     /**
-     * Установка свойств фильтрации из GET или по умолчанию
+     * Установка свойств фильтрации из GET или по умолчанию для безопасности
      */
     public function setPropertiesByGet()
     {
@@ -55,6 +59,24 @@ class FilterForm extends Model
         $this->finishHeight = isset($_GET['finishHeight']) ?  $_GET['finishHeight'] : 5;
         $this->startLength = isset($_GET['startLength']) ?  $_GET['startLength'] : 1;
         $this->finishLength = isset($_GET['finishLength']) ?  $_GET['finishLength'] : 5;
+        $this->sort = isset($_GET['sort']) ?  $_GET['sort'] : "(Height*Length*Widht) ASC";
+    }
+
+    /**
+     * Получение массива методов сортировки
+     */
+    public static function getSortArray()
+    {
+        return [
+            '(Height*Length*Widht) ASC' => 'Цена (возрастание)',
+            '(Height*Length*Widht) DESC' => 'Цена (убывание)',
+            'Widht ASC' => 'Ширина (возрастание)',
+            'Widht DESC' => 'Ширина (убывание)',
+            'Height ASC' => 'Высота (возрастание)',
+            'Height DESC' => 'Высота (убывание)',
+            'Length ASC' => 'Длина (возрастание)',
+            'Length DESC' => 'Длина (убывание)'
+        ];
     }
 
     /**
@@ -63,52 +85,30 @@ class FilterForm extends Model
     public function getResultByFilter()
     {
         // Если $this->group == -1, то происходит поиск для всех групп
-        if ($this->group == -1) {
-            return Yii::$app->db->createCommand('
-                SELECT *
-                FROM Product 
-                WHERE Widht >=:startWidht
-                AND Widht <=:finishWidht
-                AND Height >=:startHeight
-                AND Height <=:finishHeight
-                AND Length >=:startLength
-                AND Length <=:finishLength
-                AND (Height*Length*Widht) >= :startPrice
-                AND (Height*Length*Widht) <= :finishPrise
-                ')
-                ->bindValue(':startWidht', $this->startWidht)
-                ->bindValue(':finishWidht', $this->finishWidht)
-                ->bindValue(':startHeight', $this->startHeight)
-                ->bindValue(':finishHeight', $this->finishHeight)
-                ->bindValue(':startLength', $this->startLength)
-                ->bindValue(':finishLength', $this->finishLength)
-                ->bindValue(':startPrice', $this->startPrice)
-                ->bindValue(':finishPrise', $this->finishPrise)
-                ->queryAll();
-        } else {
-            return Yii::$app->db->createCommand('
-                SELECT *
-                FROM Product 
-                WHERE id_group=:id_group 
-                AND Widht >=:startWidht
-                AND Widht <=:finishWidht
-                AND Height >=:startHeight
-                AND Height <=:finishHeight
-                AND Length >=:startLength
-                AND Length <=:finishLength
-                AND (Height*Length*Widht) >= :startPrice
-                AND (Height*Length*Widht) <= :finishPrise
-                ')
-                ->bindValue(':id_group', $this->group)
-                ->bindValue(':startWidht', $this->startWidht)
-                ->bindValue(':finishWidht', $this->finishWidht)
-                ->bindValue(':startHeight', $this->startHeight)
-                ->bindValue(':finishHeight', $this->finishHeight)
-                ->bindValue(':startLength', $this->startLength)
-                ->bindValue(':finishLength', $this->finishLength)
-                ->bindValue(':startPrice', $this->startPrice)
-                ->bindValue(':finishPrise', $this->finishPrise)
-                ->queryAll();
-        }
+        $whereGroup = ($this->group == -1) ? "" : 'id_group=' . $this->group . ' AND';
+        $query = new Query();
+        $query->select('*')
+            ->from('Product')
+            ->where($whereGroup . '
+                    Widht >=:startWidht
+                    AND Widht <=:finishWidht
+                    AND Height >=:startHeight
+                    AND Height <=:finishHeight
+                    AND Length >=:startLength
+                    AND Length <=:finishLength
+                    AND (Height*Length*Widht) >= :startPrice
+                    AND (Height*Length*Widht) <= :finishPrise')
+            ->orderBy($this->sort)
+            ->addParams([
+                ':startWidht' =>  $this->startWidht,
+                ':finishWidht' =>  $this->finishWidht,
+                ':startHeight' =>  $this->startHeight,
+                ':finishHeight' =>  $this->finishHeight,
+                ':startLength' =>  $this->startLength,
+                ':finishLength' =>  $this->finishLength,
+                ':startPrice' =>  $this->startPrice,
+                ':finishPrise' =>  $this->finishPrise
+            ]);
+        return $query->createCommand()->queryAll();
     }
 }
