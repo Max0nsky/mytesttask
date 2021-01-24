@@ -23,7 +23,7 @@ $this->title = 'Главная страница';
                     <p>Сортировка результата: <br>
                         <select name="sort" id="selectSort">
                             <?php foreach ($sortValues as $sortValue => $sortName) : ?>
-                                <option value="<?= $sortValue ?>" <?php if(isset($_GET['sort']) && ($sortValue == $_GET['sort'])) echo "selected"?>> <?= $sortName ?> </option>
+                                <option value="<?= $sortValue ?>" <?php if (isset($_GET['sort']) && ($sortValue == $_GET['sort'])) echo "selected" ?>> <?= $sortName ?> </option>
                             <?php endforeach; ?>
                         </select>
                     </p>
@@ -64,13 +64,15 @@ $this->title = 'Главная страница';
                 <div class="row">
                     <?php foreach ($products as $product) : ?>
                         <div class="card col-lg-4">
-                            <?= Html::img("/images/{$groups[$product['id_group']]['name']}.jpg", ['class' => 'img-products', 'alt' => 'test', 'height' => 210]) ?>
+                            <a href="<?= Url::to(['product/details', 'id_group' => $product['id_group'], 'Widht' => $product['Widht'], 'Height' => $product['Height'], 'Length' => $product['Length']]) ?>" class="">
+                                <?= Html::img("/images/{$groups[$product['id_group']]['name']}.jpg", ['class' => 'img-products', 'alt' => 'test', 'height' => 210]) ?>
+                            </a>
                             <div class="card-body">
                                 <p>
                                     <b>Цена: <?= $product['Widht'] * $product['Height'] * $product['Length'] ?></b>
-                                    Товар: <?= $groups[$product['id_group']]['name'] ?>
+                                    Товар группы: <?= $groups[$product['id_group']]['name'] ?>
                                 </p>
-                                <p>Ш: <?= $product['Widht'] ?>, В: <?= $product['Height'] ?>, Д: <?= $product['Length'] ?>.</p>
+                                <p>Ш: <?= $product['Widht'] ?>, В: <?= $product['Height'] ?>, Д: <?= $product['Length'] ?>. <b>(Id: <?= $product['id'] ?>)</b> </p>
                                 <a href="<?= Url::to(['product/details', 'id_group' => $product['id_group'], 'Widht' => $product['Widht'], 'Height' => $product['Height'], 'Length' => $product['Length']]) ?>" class="btn btn-primary">Переход на страницу товара</a>
                             </div>
                             <br>
