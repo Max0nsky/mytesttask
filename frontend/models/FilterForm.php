@@ -50,6 +50,17 @@ class FilterForm extends Model
      */
     public function setPropertiesByGet()
     {
+        $sortMethod = [
+            'pa' => '(Height*Length*Widht) ASC',
+            'pd' => '(Height*Length*Widht) DESC',
+            'wa' => 'Widht ASC',
+            'wd' => 'Widht DESC',
+            'ha' => 'Height ASC',
+            'hd' => 'Height DESC',
+            'la' => 'Length ASC',
+            'ld' => 'Length DESC'
+        ];
+
         $this->startPrice = isset($_GET['startPrice']) ?  $_GET['startPrice'] : 1;
         $this->finishPrise = isset($_GET['finishPrise']) ?  $_GET['finishPrise'] : 125;
         $this->group = isset($_GET['group']) ?  $_GET['group'] : -1;
@@ -59,23 +70,29 @@ class FilterForm extends Model
         $this->finishHeight = isset($_GET['finishHeight']) ?  $_GET['finishHeight'] : 5;
         $this->startLength = isset($_GET['startLength']) ?  $_GET['startLength'] : 1;
         $this->finishLength = isset($_GET['finishLength']) ?  $_GET['finishLength'] : 5;
-        $this->sort = isset($_GET['sort']) ?  $_GET['sort'] : "(Height*Length*Widht) ASC";
+        $this->sort = '(Height*Length*Widht) ASC';
+        foreach ($sortMethod as $key => $value) 
+        {
+            if ((isset($_GET['sort'])) && ($key == $_GET['sort'])) {
+                    $this->sort = $value;
+            }
+        }
     }
 
     /**
-     * Получение массива методов сортировки
+     * Получение массива всех методов сортировки
      */
     public static function getSortArray()
     {
         return [
-            '(Height*Length*Widht) ASC' => 'Цена (возрастание)',
-            '(Height*Length*Widht) DESC' => 'Цена (убывание)',
-            'Widht ASC' => 'Ширина (возрастание)',
-            'Widht DESC' => 'Ширина (убывание)',
-            'Height ASC' => 'Высота (возрастание)',
-            'Height DESC' => 'Высота (убывание)',
-            'Length ASC' => 'Длина (возрастание)',
-            'Length DESC' => 'Длина (убывание)'
+            'pa' => 'Цена (возрастание)',
+            'pd' => 'Цена (убывание)',
+            'wa' => 'Ширина (возрастание)',
+            'wd' => 'Ширина (убывание)',
+            'ha' => 'Высота (возрастание)',
+            'hd' => 'Высота (убывание)',
+            'la' => 'Длина (возрастание)',
+            'ld' => 'Длина (убывание)'
         ];
     }
 

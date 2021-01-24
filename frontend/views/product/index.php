@@ -23,7 +23,7 @@ $this->title = 'Главная страница';
                     <p>Сортировка результата: <br>
                         <select name="sort" id="selectSort">
                             <?php foreach ($sortValues as $sortValue => $sortName) : ?>
-                                <option value="<?= $sortValue ?>" <?php if($sortValue == $filterForm->sort) echo "selected"?>> <?= $sortName ?> </option>
+                                <option value="<?= $sortValue ?>" <?php if(isset($_GET['sort']) && ($sortValue == $_GET['sort'])) echo "selected"?>> <?= $sortName ?> </option>
                             <?php endforeach; ?>
                         </select>
                     </p>

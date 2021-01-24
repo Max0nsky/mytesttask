@@ -44,7 +44,7 @@ class ProductController extends Controller
         // Если пришел Post от Ajax, то считаем и возвращаем результат
         if (Yii::$app->request->isPost && Yii::$app->request->isAjax) {
             $ajaxAnswer = Product::calculateForAjax(Yii::$app->request->post());
-            return json_encode(['price' => $ajaxAnswer['price'], 'quantityOnStore' => $ajaxAnswer['quantityOnStore']]);
+            return json_encode(['price' => $ajaxAnswer['price'], 'quantityOnStore' => $ajaxAnswer['quantityOnStore'], 'id' => $ajaxAnswer['id'], ]);
         }
 
         // Получение информации о товарном предложении для рендера страницы

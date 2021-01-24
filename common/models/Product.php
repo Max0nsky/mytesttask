@@ -74,11 +74,13 @@ class Product extends ActiveRecord
     {
         $result['quantityOnStore'] = 0;
         $result['price'] = 0;
+        $result['id'] = 'нет';
         $product = Product::findOne(['id_group' => $postValues['valueIdGroup'], 'Widht' => $postValues['valueWidht'], 'Height' => $postValues['valueHeight'], 'Length' => $postValues['valueLength']]);
         if (!empty($product)) {
             $postValues['valueQuantity'] =  ($postValues['valueQuantity'] < 0 || $postValues['valueQuantity'] > $product->Quantity) ? 0 : $postValues['valueQuantity'];
             $result['price'] = $product->Widht * $product->Height * $product->Length * $postValues['valueQuantity'];
             $result['quantityOnStore'] = $product->Quantity;
+            $result['id'] = $product->id;
         }
         return $result;
     }

@@ -18,7 +18,7 @@ $this->title = 'Детали ' . $group->name;
 
             <div class="col-lg-8">
                 <h3>Товар вида <?= $group->name ?></h3>
-
+                <h4>Id предложения: <span class="idThisProduct" id="idThisProduct"><?=$product->id?></span></h4>
                 <!-- Widht-->
                     <p>Ширина:
                     <div class="btn-group btn-group-toggle" data-toggle="buttons">
@@ -93,7 +93,7 @@ $this->title = 'Детали ' . $group->name;
 
                 <p>Количество: <input class="calc" type="number" name="Quantity" id="q" size="3" min="0" max="<?= $product->Quantity ?>" value="0"> </p>
                 <p> <b>На складе: <span class="quantityOnStore" id="quantityOnStore"><?= $product->Quantity ?></span></b> </p>
-                <h4>Итоговая стоимость: <span class="price" id="price"></span> </h4>
+                <h4>Итоговая стоимость: <span class="price" id="price">0</span> </h4>
             </div>
 
         </div>

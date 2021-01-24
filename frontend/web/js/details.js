@@ -14,6 +14,7 @@ $(document).ready(function() {
                 data = JSON.parse(data);
                 $('#price').text(data['price']);
                 $('#quantityOnStore').text(data['quantityOnStore']);
+                $('#idThisProduct').text(data['id']);
             },
             error: function() {
                 alert('Ошибка данных.');
