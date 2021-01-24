@@ -2,6 +2,7 @@
 
 namespace backend\controllers;
 
+use common\models\Group;
 use Yii;
 use common\models\Product;
 use common\models\ProductSearch;
@@ -37,10 +38,12 @@ class ProductController extends Controller
     {
         $searchModel = new ProductSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $groups = Group::find()->indexBy('id')->asArray()->all();
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'groups' => $groups,
         ]);
     }
 
@@ -52,8 +55,10 @@ class ProductController extends Controller
      */
     public function actionView($id)
     {
+        $groups = Group::find()->indexBy('id')->asArray()->all();
         return $this->render('view', [
             'model' => $this->findModel($id),
+            'groups' => $groups,
         ]);
     }
 
@@ -64,6 +69,7 @@ class ProductController extends Controller
      */
     public function actionCreate()
     {
+        $groups = Group::find()->indexBy('id')->asArray()->all();
         $model = new Product();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -72,6 +78,7 @@ class ProductController extends Controller
 
         return $this->render('create', [
             'model' => $model,
+            'groups' => $groups,
         ]);
     }
 
@@ -84,6 +91,7 @@ class ProductController extends Controller
      */
     public function actionUpdate($id)
     {
+        $groups = Group::find()->indexBy('id')->asArray()->all();
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
@@ -92,6 +100,7 @@ class ProductController extends Controller
 
         return $this->render('update', [
             'model' => $model,
+            'groups' => $groups,
         ]);
     }
 

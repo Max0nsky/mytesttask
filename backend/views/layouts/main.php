@@ -36,7 +36,6 @@ AppAsset::register($this);
         ],
     ]);
     $menuItems = [
-        ['label' => 'Группы', 'url' => ['/group/index']],
         ['label' => 'Торговые предложения', 'url' => ['/product/index']],
     ];
     if (Yii::$app->user->isGuest) {
